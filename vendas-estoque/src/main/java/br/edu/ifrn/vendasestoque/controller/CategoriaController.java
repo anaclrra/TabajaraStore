@@ -60,9 +60,12 @@ public class CategoriaController {
     }
 
     @PutMapping
-    public ResponseEntity atualizar(@RequestBody @Valid Categoria categoria) {
-        var categoriaLocal = repository.getReferenceById(categoria.getId());
-        repository.save(categoriaLocal);
+    @Transactional
+    public ResponseEntity<Categoria> atualizar(@RequestBody @Valid Categoria categoria){
+        Categoria categoriaLocal = repository.findById(categoria.getId()).get();
+ 
+        categoriaLocal.setNome(categoria.getNome());
+
         return ResponseEntity.ok(categoriaLocal);
     }
 }
